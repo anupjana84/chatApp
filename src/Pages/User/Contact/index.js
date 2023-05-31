@@ -1,151 +1,178 @@
-import React,{useState,useEffect} from 'react'
-import Layout from '../Layout'
-import { fetchProducts,setProducts } from '../../../Reducers/Products'
+import React, { useState, useEffect, memo } from 'react'
+import Navbar from './Navbar'
+import SideBar from './SideBar'
+import DropDown from './DropDown'
+import { fetchUsers } from '../../../Reducers/User'
 import { useDispatch, useSelector } from 'react-redux'
+import io from "socket.io-client";
 
-const people = [
-  {
-    name: 'John Doe',
-    title: 'Front-end Developer',
-    department: 'Engineering',
-    email: 'john@devui.com',
-    role: 'Developer',
-    image:
-      'https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80',
-  },
-  {
-    name: 'Jane Doe',
-    title: 'Back-end Developer',
-    department: 'Engineering',
-    email: 'jane@devui.com',
-    role: 'CTO',
-    image:
-      'https://images.unsplash.com/photo-1639149888905-fb39731f2e6c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80',
-  },
-]
+import { name } from '../../../Utils'
+import MessageItem from '../Chat/Componts/MessageItem'
+let socket
+
 
 const Contact = () => {
-  const dispatch=useDispatch()
-  const [search, setSearch] = useState('')
-const pre=useSelector(state=>state.Products)
-console.log(pre,"")
- 
+  const { users, user } = useSelector(state => state.User)
+  const [isOpen, setIsOpen] = useState(false)
+
+  const [receiverId, setReceiverId] = useState('')
+  const [receiverName, setReceiverName] = useState('')
+
+
+  const dispatch = useDispatch()
+
+
+  useEffect(() => {
+    // console.log(user.toke)
+    dispatch(fetchUsers(user.token))
+
+    return () => {
+
+    }
+  }, [])
+
+  useEffect(() => {
+    socket = io("http://localhost:8000/", {
+      auth: {
+        token: user?.id
+      }
+    });
+
+
+    return () => {
+
+    }
+  }, [])
+
+  useEffect(() => {
+
+    socket.on('userOffLine', (socket) => {
+      const element = document.getElementById(`${socket.userId}-status`)
+      if (element) {
+        element.style.backgroundColor = 'red'
+
+      }
+
+
+    })
+
+    socket.on('userOnLine', (socket) => {
+      const element1 = document.getElementById(`${socket.userId}-status`)
+      if (element1) {
+        element1.style.backgroundColor = 'green'
+
+      }
+
+    })
+
+    return () => {
+
+    }
+  }, [])
+
+
+
+
+
   return (
-    <Layout>
-      <div className='w-full h-10 bg-red-600 '>
-        <button className='bg-green-400' onClick={()=>dispatch(fetchProducts())}>Click</button>
-        <button className='bg-green-400' onClick={()=>dispatch(setProducts())}>Click</button>
-      
-      </div>
-     <section className="mx-auto w-full max-w-7xl px-4 py-4">
-        <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
-          <div>
-            <h2 className="text-lg font-semibold">Employees</h2>
-            <p className="mt-1 text-sm text-gray-700">
-              This is a list of all employees. You can add new employees, edit or delete existing
-              ones.
-            </p>
-          </div>
-          <div>
-            <button
-              type="button"
-              className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-            >
-              Add new employee
-            </button>
-          </div>
-        </div>
-        <div className="mt-6 flex flex-col">
-          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-              <div className="overflow-hidden border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="px-4 py-3.5 text-left text-sm font-normal text-gray-700"
-                      >
-                        <span>Employee</span>
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-12 py-3.5 text-left text-sm font-normal text-gray-700"
-                      >
-                        Title
-                      </th>
+    <>
+      <div className="bg-gray-50 dark:bg-gray-800">
+        <div class="flex overflow-hidden bg-gray-50 dark:bg-gray-900">
 
-                      <th
-                        scope="col"
-                        className="px-4 py-3.5 text-left text-sm font-normal text-gray-700"
-                      >
-                        Status
-                      </th>
+          <Navbar click={() => {
+            setIsOpen(!isOpen)
+            console.log("first")
+          }} />
+          <SideBar />
+          {/*========== user list============ */}
+          {isOpen &&
+            <>
+              <div className="absolute z-50 top-16 right-0 max-w-sm my-4 overflow-scroll text-base fixed list-none
+    h-80   bg-white divide-y divide-gray-100 rounded shadow-lg dark:divide-gray-600 dark:bg-gray-700 block" id="notification-dropdown"
+                data-popper-placement="bottom">
+                <div className="block px-4 py-2 text-base text-red-500 font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  {user.email}
+                </div>
+                <div>
+                  {users.length > 0 && users.map((item, index) => (
+                    <button onClick={() => {
+                      setReceiverId(item._id)
+                      setReceiverName(item.name)
 
-                      <th
-                        scope="col"
-                        className="px-4 py-3.5 text-left text-sm font-normal text-gray-700"
-                      >
-                        Role
-                      </th>
-                      <th scope="col" className="relative px-4 py-3.5">
-                        <span className="sr-only">Edit</span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 bg-white">
-                    {[...people].filter(people=>!people.email==search).map((person) => (
-                      <tr key={person.name}>
-                        <td className="whitespace-nowrap px-4 py-4">
-                          <div className="flex items-center">
-                            <div className="h-10 w-10 flex-shrink-0">
-                              <img
-                                className="h-10 w-10 rounded-full object-cover"
-                                src={person.image}
-                                alt=""
-                              />
-                            </div>
-                            <div className="ml-4">
-                              <div className="text-sm font-medium text-gray-900">{person.name}</div>
-                              <div className="text-sm text-gray-700">{person.email}</div>
-                            </div>
+                    }
+                    } key={item._id.toString()} className="flex px-4 py-3 border-b hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600">
+                      <div className="flex-shrink-0">
+                        <img className="rounded-full w-11 h-11"
+                          src="https://flowbite-admin-dashboard.vercel.app/images/users/bonnie-green.png" alt="Jese image" />
+                        {item.isOnline == "offline" ? (
+                          <div
+                            id={`${item._id}-status`}
+                            className={`absolute flex items-center justify-center w-3 h-3 ml-6 -mt-3 mb-2 border
+             border-white rounded-full bg-primary-700 dark:border-gray-700 bg-red-400`}>
+
                           </div>
-                        </td>
-                        <td className="whitespace-nowrap px-12 py-4">
-                          <div className="text-sm text-gray-900 ">{person.title}</div>
-                          <div className="text-sm text-gray-700">{person.department}</div>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-4">
-                          <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-                            Active
-                          </span>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-700">
-                          {person.role}
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium">
-                          <a href="#" className="text-gray-700">
-                            Edit
-                          </a>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                        ) : (<div
+                          id={`${item._id}-status`}
+                          className={`absolute flex items-center justify-center w-3 h-3 ml-6 -mt-3 mb-2 border
+             border-white rounded-full bg-primary-700 dark:border-gray-700 bg-green-400`}>
+
+                        </div>)}
+
+                      </div>
+                      <div className="w-full pl-3">
+                        <div className="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
+
+                          {item.name}</div>
+
+                      </div>
+                    </button>
+                  ))}
+                </div>
+
               </div>
+            </>}
+          {/*========== user list============ */}
+
+
+          <div id="main-content" class="relative w-full h-full  bg-green-500 lg:ml-64 dark:bg-gray-900">
+
+
+
+            {receiverId && <div class="w-full h-50 bg-red-600  flex 
+items-center justify-center ">
+
+              <p class="text-white text-xl mt-3">{receiverName}</p>
+            </div>}
+
+            <div
+              id="messages"
+              className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue 
+        scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch
+        relative"
+
+            >
+              {name.map((item, i) => {
+                return (
+                  <MessageItem key={i.toString()} item={item} i={i} />
+
+                );
+              })}
+
+
             </div>
+
+
+
+            <div class="w-100 z-100 h-20 ml-50 bg-slate-600 opacity-8 absolute bottom-6 right-0"></div>
+
           </div>
         </div>
-      </section>
-    
-    </Layout>
+       
+
+      </div>
+      <div style={{width:'100%', height:"50px", backgroundColor:'red', position:'absolute' ,bottom:"0px "}}></div>
+    </>
   )
 }
 
 export default Contact
-
-
-
-
-
-

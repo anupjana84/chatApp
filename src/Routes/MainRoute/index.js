@@ -51,9 +51,9 @@ const MainRoute = () => {
 
         } />
         <Route path="/dashboard" element={
-          <PrivateRoute>
+          // <PrivateRoute>
             <Dashboard />
-          </PrivateRoute>
+          // </PrivateRoute>
 
         } />
         <Route path="/chat" element={

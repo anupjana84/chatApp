@@ -6,7 +6,9 @@ const Dashboard = () => {
   
   return (
     <DefaultLayout>
-      dash
+      
+      <div className='w-full h-full bg-red-500'> 
+      jjjjj</div>
     </DefaultLayout>
   )
 }
