@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Layout from '../Layout'
 import { ArrowRight } from 'lucide-react'
+import axios from 'axios'
 
 const Register = () => {
   const [name, setName] = useState('')
@@ -14,30 +15,26 @@ const Register = () => {
     console.log(name);
     console.log(email);
     console.log(password);
-    if (name == '' || email == '' || password == '') {
-      alert('all fields required')
-    } else {
-      // fetch('shjbdjw', {
-      //   method: "get",
-      //   headers: {
-      //     Accept: 'application/json',
-      //     Content: 'Type',
-      //   },
-      //   body: JSON.stringify({
-      //     em: email,
-      //     name: name,
-      //     password: password
-      //   })
 
-      // })
-      //   .then((res) => {
-      //     return res.json()
-      //   })
-      //   .then(result => setUser(result))
-      //   .catch((error) => {
-      //     console.log(error);
-      //   })
-    }
+    axios.post('/users',
+    {
+   name:"ddddd",
+      email:"a@g.com",
+      password:"123456685"
+  }
+    )
+    .then( (response)=> {
+      console.log(response.data);
+    })
+    .catch( (error)=> {
+      console.log(error.response.data.error,'error')
+    })
+    // if (name == '' || email == '' || password == '') {
+    //   alert('all fields required')
+    // } else {
+      
+     
+    // }
   }
   return (
     <Layout>

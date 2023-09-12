@@ -1,33 +1,50 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect,} from 'react'
 import Layout from '../Layout'
 import { ArrowRight } from 'lucide-react'
+import { useDispatch, useSelector } from 'react-redux'
+
+import axios from 'axios'
+import { useNavigate } from "react-router-dom";
+import { setUser } from '../../../Reducers/User'
+
 const Login = () => {
+  const navigate = useNavigate();
+  const {user}= useSelector(state=>state.User)
+ 
+
+  const dispatch= useDispatch()
+
+  
   const [email, setEmail]=useState('')
   const [password, setPassword]=useState('')
   // console.log(email)
+   
+
+
+
   const submitForm = (e) => {
-    // alert('pasdfsad')
-    console.log("first")
     e.preventDefault()
-    const data = {
-      email,
-      password
-    }
-    console.log(data)
-    fetch('/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/josn',
-      },
-      body: JSON.stringify(data)
+    axios.post('/login',{
+      email:"test@gmail.com",
+      password:"123456"
+    }).then(res=>{
+      if (res.data.message) {
+      
+          dispatch(setUser(
+            res.data
+          ))
+      
+         
+        
+        
+        navigate('/chat2')
+      }
+      
     })
-      .then(res => {
-        return res.json()
-      }).then(result => {
-        console.log(JSON.stringify(result))
-      }).catch(err => console.log(err))
+    .catch(err=>console.log(err,'rr'))
 
   }
+ 
  
   
   return (
@@ -63,7 +80,7 @@ const Login = () => {
               Sign In
             </a> */}
           </p>
-          <form  className="mt-8">
+          <form onSubmit={submitForm} className="mt-8">
             <div className="space-y-5">
              
               <div>
@@ -104,7 +121,7 @@ const Login = () => {
               </div>
               <div>
                 <button
-                  type="button"
+                  type="submit"
                   
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                 >
@@ -113,7 +130,7 @@ const Login = () => {
               </div>
             </div>
           </form>
-          
+         
         </div>
       </div>
     </section>

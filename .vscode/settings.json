@@ -1,0 +1,16 @@
+// {
+//     "editor.acceptSuggestionOnEnter": "on",
+//     "emmet.preferences": {
+//         "emmet.includeLanguages": {
+//             "javascript": "javascriptreact",
+//             "typescript": "typescriptreact"
+//         }
+//     }
+// }
+
+{"emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "typescript": "typescriptreact"
+},
+"editor.acceptSuggestionOnEnter": "on"
+}
