@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import io from "socket.io-client";
-import { removeUser } from "../../../Reducers/User";
+import { removeUser,messageGet } from "../../../Reducers/User";
 import { useNavigate } from "react-router-dom";
 import Header from "../Chat/Componts/Header";
 import FormComponets from "../Chat/Componts/FormComponets";
@@ -14,7 +14,8 @@ const Chat2 = () => {
    const navigate = useNavigate();
    const {user}=useSelector(state=>state.User)
 
-   console.log(user,"use")
+
+  //  console.log(user,"use")
 const socket=  io("http://localhost:8000/",{
    auth:{
       token:user?.id
@@ -23,31 +24,29 @@ const socket=  io("http://localhost:8000/",{
 
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
-  console.log(chat.length, "ooo", message);
+  // console.log(chat.length, "ooo", message);
 
-  const submitForm = (e) => {
-    console.log("first", message);
-    e.preventDefault();
+  const submitForm = (message) => {
+    
+   
+    // e.preventDefault();
     socket.emit("chat", { message });
     setMessage("");
+    // getMessage()
   };
-  useEffect(() => {
-   
   
-    
-  }, [])
   
 const logOut=()=>{
   dispatch(removeUser())
   // navigate('/')
 }
+
   useEffect(() => {
-    socket.on("chat", (payload) => {
-      console.log(payload, "taa");
-      //  const dadf = chat.push(payload)
-      setChat([...chat, payload]);
-      setMessage("");
-    });
+     socket.on("chat", (payload) => {
+       setChat([...chat,payload])
+       
+     
+     });
   });
 
   return (
@@ -79,7 +78,9 @@ const logOut=()=>{
                    </svg> */}
             </button>
           </span>
-         <FormComponets submitForm={submitForm} setMessage={setMessage} message={setMessage} />
+         <FormComponets submitForm={submitForm} message={message}
+         setMessage={setMessage}
+         />
         </div>
       </div>
     </div>

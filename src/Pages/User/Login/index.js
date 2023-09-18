@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import { setUser } from '../../../Reducers/User'
+import { ToastContainer, toast } from 'react-toastify';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,8 +26,8 @@ const Login = () => {
   const submitForm = (e) => {
     e.preventDefault()
     axios.post('/login',{
-      email:"test@gmail.com",
-      password:"123456"
+      email,
+      password
     }).then(res=>{
       if (res.data.message) {
       
@@ -37,11 +38,15 @@ const Login = () => {
          
         
         
-        navigate('/chat2')
+        navigate('/chat3')
       }
       
     })
-    .catch(err=>console.log(err,'rr'))
+    .catch(err=>{
+      toast.error('no')  
+      console.log(err,'rr') 
+    }
+      )
 
   }
  

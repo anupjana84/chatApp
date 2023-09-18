@@ -13,8 +13,11 @@ import Chat from "../../Pages/User/Chat"
 import UserDetails from "../../Pages/User/UserDetails"
 import Chat2 from "../../Pages/User/Chat2"
 import Chat3 from "../../Pages/User/Chat3"
+import Frinds from "../../Pages/User/Frinds"
 
+import { ToastContainer, toast } from 'react-toastify';
 
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -29,7 +32,7 @@ const MainRoute = () => {
           path="/"
           element={
             user?.token && user?.id ? (
-              <Navigate to="/chat2" />
+              <Navigate to="/chat3" />
             ) : (
               <Navigate to="/login" />
             )
@@ -67,11 +70,14 @@ const MainRoute = () => {
         } />
         
         <Route path="/chat3" element={<Chat3 />} />
+        <Route path="/frinds" element={<Frinds />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/register" element={<Register />} />
         <Route path="/register1" element={<DefaultLayout />} />
         <Route path="/userDetails/:useId/:name" element={<UserDetails />} />
         {/* <Route path="*" element={<p>404 Not found</p>} /> */}
       </Routes>
+      <ToastContainer/>
     </BrowserRouter>
   )
 }

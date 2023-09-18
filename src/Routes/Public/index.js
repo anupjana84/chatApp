@@ -9,7 +9,7 @@ const PublicRoute = ({ children }) => {
     const {user}=useSelector(state=>state.User)
 
   // If there's no token or user ID, redirect to the login page
-  if (user?.token || user?.id) return <Navigate to="/chat2" replace />;
+  if (user?.token || user?.id) return <Navigate to="/chat3" replace />;
 
   // If authenticated, render the child components
   return children;

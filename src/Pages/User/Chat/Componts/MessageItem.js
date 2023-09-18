@@ -6,7 +6,9 @@ const MessageItem = ({item, i}) => {
     <div className={`flex items-end  ${i%2==0?"justify-end ":"justify-start "} `  }>
       <div className={`flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 ${i%2==0?"order-1":"order-2"}   items-end `}>
         <div>
-          <span className={`px-4 py-2 rounded-lg inline-block rounded-br-none ${i%2==0?"bg-blue-600":"bg-gray-300"}  text-white`}>
+          <span className={`px-4 py-2 rounded-lg inline-block
+          
+           ${i%2==0?"bg-blue-600 rounded-br-none":"bg-gray-300 rounded-bl-none"}  text-white`}>
             {item.message}
           </span>
         </div>
