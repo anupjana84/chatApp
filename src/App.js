@@ -1,50 +1,26 @@
-<<<<<<< HEAD
-=======
-import { Routes, Route } from "react-router-dom"
-import Home from "./Pages/Home"
-import Contact from "./Pages/Contact"
-import About from "./Pages/About"
-import Dashboard from "./Pages/Dashboard"
-import Login from "./Pages/Login"
-import Register from "./Pages/Register"
-import Protected from "./Pages/ProtectedRoute"
+import React from 'react'
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom"
+import Home from './Pages/User/Home'
+import Dashboard from './Pages/User/Dashboard'
+import Login from './Pages/User/Login'
+import Register from './Pages/User/Register'
+import Contact from './Pages/User/Contact'
+import About from './Pages/User/About'
+import Chat3 from './Pages/User/Chat3'
 
->>>>>>> bdb76a8 (08062023)
-
-import MainRoute from './Routes/MainRoute'
-
-import {
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query'
-const queryClient = new QueryClient(
-  {
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false, // default: true
-      },
-    },
-  }
-)
 const App = () => {
   return (
-<<<<<<< HEAD
-    <QueryClientProvider client={queryClient}>
-    <MainRoute/>
-    </QueryClientProvider>
-=======
-    <div className="App">
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={ <Home/> } />
-        <Route path="about" element={ <About/> } />
-        <Route path="contact" element={ <Contact/> } />
-       
-        <Route path="dashboard" element={ <Protected Component={Dashboard} /> } />
-        <Route path="login" element={ <Login/> } />
-        <Route path="register" element={ <Register/> } />
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/chat3" element={<Chat3  />} />
       </Routes>
-    </div>
->>>>>>> bdb76a8 (08062023)
+    </BrowserRouter>
   )
 }
 

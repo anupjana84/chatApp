@@ -1,5 +1,5 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
-import { useQuery, useQueryClient } from "react-query";
+
 const initialState = {
     user: {},
     messageOne:[],

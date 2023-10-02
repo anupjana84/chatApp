@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid'
-const FormComponets = ({submitForm, setMessage, message}) => {
+
+const FormComponets = ({submitForm, setMessage,receiverName, message,receiverId}) => {
 
 const [messageText, setMessageText]=useState('')
 const formSubmit=(e)=>{
@@ -32,19 +33,33 @@ const formSubmit=(e)=>{
             /> 
             <div className="absolute right-0 items-center inset-y-0  ">
              
+
+            {/* <button
+             
+             type="button"
+             className="inline-flex items-center justify-center rounded-full
+              h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none"
+           >
+             name
+           </button> */}
+             {/* {receiverName.length>0 &&  <button
+             
+             type="button"
+             className="inline-flex items-center justify-center rounded-full
+              h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none"
+           >
+             {receiverName}
+           </button>} */}
              
               <button
-                type="button"
-                className="inline-flex items-center justify-center rounded-full h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none"
-              >
-                
-              </button>
-              <button
+               disabled={message.length==0 && receiverId==""? true:false}
                 type="submit"
-                className="inline-flex items-center justify-center
+                className={`inline-flex items-center justify-center
                 absolute top-0 right-0
-                 rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white bg-blue-500
-                  hover:bg-blue-400 focus:outline-none"
+                 rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white
+                  bg-blue-500
+                  ${message.length==0 && receiverId==""? 'opacity-30':'opacity-100'}
+                  hover:bg-blue-400 focus:outline-none`}
               >
                 <span className="font-bold">Send</span>
                

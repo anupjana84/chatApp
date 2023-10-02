@@ -7,11 +7,15 @@ import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import { setUser } from '../../../Reducers/User'
 import { ToastContainer, toast } from 'react-toastify';
+import { authService } from '../../../Services/Auth'
+import { logInfunc } from '../../../Config'
+
+
 
 const Login = () => {
   const navigate = useNavigate();
   const {user}= useSelector(state=>state.User)
- 
+ console.log(user,'uer')
 
   const dispatch= useDispatch()
 
@@ -23,30 +27,38 @@ const Login = () => {
 
 
 
-  const submitForm = (e) => {
+  const submitForm =async (e) => {
     e.preventDefault()
-    axios.post('/login',{
-      email,
-      password
-    }).then(res=>{
-      if (res.data.message) {
+    const data =  await authService.login(email,password)
+    dispatch(setUser(data))
+    navigate('/chat3')
+  
+
+  
+    // console.log("first")
+    // e.preventDefault()
+    // axios.post('/login',{
+    //   email,
+    //   password
+    // }).then(res=>{
+    //   if (res.data.message) {
       
-          dispatch(setUser(
-            res.data
-          ))
+    //       dispatch(setUser(
+    //         res.data
+    //       ))
       
          
         
         
-        navigate('/chat3')
-      }
+    //     navigate('/chat3')
+    //   }
       
-    })
-    .catch(err=>{
-      toast.error('no')  
-      console.log(err,'rr') 
-    }
-      )
+    // })
+    // .catch(err=>{
+    //   toast.error('no')  
+    //   console.log(err,'rr') 
+    // }
+    //   )
 
   }
  

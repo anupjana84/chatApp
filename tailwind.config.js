@@ -2,7 +2,7 @@
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
-<<<<<<< HEAD
+
     'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}'
   ],
   theme: {
@@ -23,11 +23,11 @@ module.exports = {
   plugins: [
     require('flowbite/plugin')
   ],
-=======
-  ],
+
+  
   theme: {
     extend: {},
   },
   plugins: [],
->>>>>>> bdb76a8 (08062023)
+
 }

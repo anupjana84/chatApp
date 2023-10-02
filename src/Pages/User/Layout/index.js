@@ -24,6 +24,7 @@ const Layout = ({children}) => {
       <Link className="mr-5 hover:text-gray-900" to='/'>Home</Link>
       <Link className="mr-5 hover:text-gray-900" to='/about'>About</Link>
       <Link className="mr-5 hover:text-gray-900" to='/contact'>Contact</Link>
+      <Link className="mr-5 hover:text-gray-900" to='/posts'>Posts</Link>
       {!user?.token?
       <Link className="mr-5 hover:text-gray-900" to='/login'>Login</Link>:
       <Link className="mr-5 hover:text-gray-900" to='/Dashboard'> Dashboard</Link>}

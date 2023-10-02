@@ -18,6 +18,7 @@ import Frinds from "../../Pages/User/Frinds"
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import Posts from "../../Pages/User/Posts"
 
 
 
@@ -69,11 +70,13 @@ const MainRoute = () => {
 
         } />
         
-        <Route path="/chat3" element={<Chat3 />} />
+        <Route path="/chat3" element={<Chat2 />} />
+       
         <Route path="/frinds" element={<Frinds />} />
         <Route path="/register" element={<Register />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/register1" element={<DefaultLayout />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/posts" element={<Posts />} />
         <Route path="/userDetails/:useId/:name" element={<UserDetails />} />
         {/* <Route path="*" element={<p>404 Not found</p>} /> */}
       </Routes>
